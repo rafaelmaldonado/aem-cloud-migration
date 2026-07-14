@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference — AEMaaCS Repository Areas (Mutable / Immutable)</title>
+<link rel="stylesheet" href="../assets/course.css">
+<style>
+  table { width: 100%; border-collapse: collapse; margin: 1.2rem 0; font-size: .92rem; }
+  th, td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-family: -apple-system, sans-serif; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+  .im { color: var(--warn); font-weight: 600; }
+  .mu { color: var(--good); font-weight: 600; }
+</style>
+</head>
+<body>
+<p class="kicker">Reference · Quick lookup</p>
+<h1>AEMaaCS Repository Areas</h1>
+<p class="lede">Which paths are mutable, which are immutable, and where each ships from. Keep this open while restructuring a project. See <a href="../lessons/0001-mutable-vs-immutable.html">Lesson 1</a>.</p>
+
+<table>
+<thead><tr><th>Path</th><th>Type</th><th>Ships in</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td><code>/apps</code></td><td class="im">Immutable</td><td>ui.apps (application pkg)</td><td>Code. Read-only at runtime. Baked into golden image.</td></tr>
+<tr><td><code>/libs</code></td><td class="im">Immutable</td><td>Adobe (product)</td><td>Never modify. Product code.</td></tr>
+<tr><td><code>/content</code></td><td class="mu">Mutable</td><td>ui.content</td><td>Authored pages &amp; assets. Changed at runtime.</td></tr>
+<tr><td><code>/conf</code></td><td class="mu">Mutable</td><td>ui.content</td><td>Editable templates, policies, context-aware config.</td></tr>
+<tr><td><code>/home</code></td><td class="mu">Mutable</td><td>RepoInit (structure)</td><td>Users, groups, service users. Only publish path writable.</td></tr>
+<tr><td><code>/var</code></td><td class="mu">Mutable</td><td>runtime</td><td>Runtime data. Do not deploy content here.</td></tr>
+<tr><td><code>/etc</code></td><td class="mu">Mutable</td><td>ui.content (legacy)</td><td>Deprecated — migrate off /etc where possible.</td></tr>
+<tr><td><code>/oak:index</code></td><td class="mu">Mutable</td><td>ui.apps or ui.content*</td><td>Index defs ship with project but repo area is mutable; must be refactored for cloud.</td></tr>
+</tbody>
+</table>
+
+<div class="callout">
+<span class="label">Package type rules</span>
+<strong>Application package</strong> (<code>&lt;packageType&gt;application&lt;/packageType&gt;</code>): immutable paths only.<br>
+<strong>Content package</strong> (<code>&lt;packageType&gt;content&lt;/packageType&gt;</code>): mutable paths only.<br>
+<strong>Container package</strong>: embeds both; produced by the <code>all</code> module.
+</div>
+
+<div class="callout new">
+<span class="label">Deploy mantra</span>
+Code → immutable → pipeline only. Content → mutable → author + Package Manager / distribution. <strong>Never the two in one package.</strong>
+</div>
+
+<p style="font-size:.82rem;color:var(--muted);margin-top:2rem">
+Source: <a href="https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/implementing/developing/aem-project-content-package-structure" target="_blank">Adobe Experience League — AEM Project Content Package Structure</a>.
+</p>
+</body>
+</html>

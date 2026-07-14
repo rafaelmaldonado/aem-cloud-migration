@@ -1,0 +1,150 @@
+/* Shared stylesheet for the AEMaaCS Migration course.
+   Tufte-inspired: generous margins, readable serif body, restrained palette.
+   Every lesson links this so the course reads as one consistent whole. */
+
+:root {
+  --ink: #1a1a1a;
+  --muted: #6b6b6b;
+  --rule: #e0ddd6;
+  --bg: #fdfcf9;
+  --accent: #b0281a;      /* Adobe-ish red, used sparingly */
+  --code-bg: #f4f2ec;
+  --good: #2e7d32;
+  --warn: #b0281a;
+  --maxw: 42rem;
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 18px; }
+
+body {
+  margin: 0 auto;
+  max-width: var(--maxw);
+  padding: 3rem 1.4rem 6rem;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: et-book, Palatino, "Palatino Linotype", Georgia, serif;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.kicker {
+  font-family: -apple-system, "Segoe UI", system-ui, sans-serif;
+  font-size: .72rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0 0 .3rem;
+}
+
+/* Certification domain badge — every lesson declares its exam domain + weight */
+.domain-badge {
+  display: inline-block;
+  font-family: -apple-system, "Segoe UI", sans-serif;
+  font-size: .68rem; letter-spacing: .06em; text-transform: uppercase;
+  background: #1a1a1a; color: #fff; padding: .25em .6em; border-radius: 3px;
+  margin-bottom: .8rem;
+}
+.domain-badge .wt { color: #f0b429; margin-left: .4em; }
+
+/* Exam-tip callout */
+.callout.exam { border-left-color: #f0b429; background: #fffbf0; }
+
+h1 { font-size: 2rem; line-height: 1.15; margin: 0 0 .6rem; font-weight: 600; }
+h2 { font-size: 1.3rem; margin: 2.4rem 0 .6rem; font-weight: 600; }
+h3 { font-size: 1.05rem; margin: 1.6rem 0 .4rem; font-weight: 600; }
+
+.lede { font-size: 1.12rem; color: #333; margin: 0 0 1.6rem; }
+
+p, li { font-size: 1rem; }
+
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid #e2b7b0; }
+a:hover { border-bottom-color: var(--accent); }
+
+hr { border: none; border-top: 1px solid var(--rule); margin: 2.4rem 0; }
+
+code {
+  font-family: "SF Mono", "Cascadia Code", Consolas, monospace;
+  font-size: .85em;
+  background: var(--code-bg);
+  padding: .1em .35em;
+  border-radius: 3px;
+}
+
+pre {
+  background: var(--code-bg);
+  border-left: 3px solid var(--accent);
+  padding: 1rem 1.2rem;
+  overflow-x: auto;
+  font-size: .82rem;
+  line-height: 1.45;
+}
+pre code { background: none; padding: 0; font-size: inherit; }
+
+/* Callout boxes */
+.callout {
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--accent);
+  background: #fff;
+  padding: .9rem 1.1rem;
+  margin: 1.4rem 0;
+  border-radius: 0 4px 4px 0;
+}
+.callout.old { border-left-color: var(--muted); }
+.callout.new { border-left-color: var(--good); }
+.callout .label {
+  font-family: -apple-system, "Segoe UI", sans-serif;
+  font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); display: block; margin-bottom: .3rem;
+}
+
+/* Before/after two-column compare */
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.4rem 0; }
+.compare > div { border: 1px solid var(--rule); border-radius: 4px; padding: .8rem 1rem; background: #fff; }
+.compare h4 { margin: 0 0 .5rem; font-size: .8rem; font-family: -apple-system, sans-serif;
+  text-transform: uppercase; letter-spacing: .08em; }
+.compare .was h4 { color: var(--muted); }
+.compare .now h4 { color: var(--good); }
+@media (max-width: 34rem) { .compare { grid-template-columns: 1fr; } }
+
+/* Quiz widget (paired with assets/quiz.js) */
+.quiz { border: 1px solid var(--rule); border-radius: 6px; padding: 1.1rem 1.2rem; margin: 1.4rem 0; background: #fff; }
+.quiz .q { font-weight: 600; margin-bottom: .7rem; }
+.quiz button {
+  display: block; width: 100%; text-align: left; margin: .35rem 0;
+  padding: .55rem .8rem; border: 1px solid var(--rule); border-radius: 4px;
+  background: var(--bg); cursor: pointer; font: inherit; font-size: .92rem;
+}
+.quiz button:hover { border-color: var(--accent); }
+.quiz button.sel { background: #e8eef6; border-color: #4a6fa5; }
+.quiz button.correct { background: #e7f3e8; border-color: var(--good); }
+.quiz button.wrong { background: #fbe9e7; border-color: var(--warn); }
+.quiz button.check { text-align: center; font-weight: 600; margin-top: .6rem; background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+.quiz .feedback { margin-top: .7rem; font-size: .9rem; color: var(--muted); min-height: 1.2em; }
+
+.footer-nav {
+  margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--rule);
+  font-family: -apple-system, "Segoe UI", sans-serif; font-size: .85rem;
+  display: flex; justify-content: space-between; color: var(--muted);
+}
+
+.ask {
+  font-family: -apple-system, "Segoe UI", sans-serif; font-size: .9rem;
+  background: #fff8e6; border: 1px solid #f0e2b8; border-radius: 4px;
+  padding: .8rem 1rem; margin: 2rem 0;
+}
+
+.source {
+  font-family: -apple-system, "Segoe UI", sans-serif; font-size: .9rem;
+  background: #f0f4f8; border: 1px solid #d4e0ea; border-radius: 4px;
+  padding: .8rem 1rem; margin: 1.6rem 0;
+}
+.source .label { font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); display: block; margin-bottom: .3rem; }
+
+@media print {
+  body { max-width: none; }
+  .quiz button { display: none; }
+  a { color: var(--ink); border: none; }
+}

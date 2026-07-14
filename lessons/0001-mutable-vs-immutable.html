@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 1 — Mutable vs Immutable: the split that reshapes your project</title>
+<link rel="stylesheet" href="../assets/course.css">
+</head>
+<body>
+
+<p class="kicker">AD0-E136 Certification Prep · Lesson 1</p>
+<span class="domain-badge">Domain 5 · Implementation<span class="wt">16%</span></span>
+<h1>Mutable vs. Immutable: the split that reshapes your project</h1>
+<p class="lede">The single change that reorganizes your whole codebase. Get it wrong and your Cloud Manager build fails before a line of your code runs. Get it right and everything downstream falls into place.</p>
+
+<h2>The core idea</h2>
+<p>On classic AEM, you deploy one content package and it can write anywhere in the repository. On <strong>AEM as a Cloud Service</strong>, the repository is split in two, and <em>code and content can no longer live in the same package</em>.</p>
+
+<div class="callout new">
+<span class="label">The rule</span>
+<strong>Immutable</strong> = code. Written <em>only</em> at deploy time, read-only at runtime: <code>/apps</code> and <code>/libs</code>.<br>
+<strong>Mutable</strong> = everything a running author instance can change: <code>/content</code>, <code>/conf</code>, <code>/home</code>, <code>/var</code>, <code>/etc</code>, <code>/oak:index</code>.
+</div>
+
+<p>Why the hard line? Cloud Service runs many replaceable instances that spin up from a <em>golden image</em> built by the pipeline. Immutable code is baked into that image so every instance is identical. Mutable content lives in the shared repository the instances attach to. Mixing them means a deploy would either fail or silently clobber author changes.</p>
+
+<h2>What it means for your package structure</h2>
+<p>Your Maven project must produce a <strong>container package</strong> that embeds two sub-packages — Adobe's tooling enforces this split at build time:</p>
+
+<div class="compare">
+  <div class="was">
+    <h4>Classic AEM — one package</h4>
+    <pre><code>ui.apps/
+  /apps/myco/...
+  /content/myco/...   ← mixed in
+  /conf/myco/...      ← mixed in</code></pre>
+  </div>
+  <div class="now">
+    <h4>Cloud Service — split</h4>
+<pre><code>all/            (container)
+ ├─ ui.apps/    → /apps  (IMMUTABLE)
+ └─ ui.content/ → /content, /conf
+                  (MUTABLE)</code></pre>
+  </div>
+</div>
+
+<p>The <code>ui.apps</code> package is marked <code>&lt;packageType&gt;application&lt;/packageType&gt;</code> and may contain <strong>only</strong> immutable paths. If a single node under <code>/content</code> sneaks in, the <a href="https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/implementing/developing/aem-project-content-package-structure" target="_blank">package structure validation</a> fails the pipeline.</p>
+
+<div class="callout">
+<span class="label">Gotcha from real migrations</span>
+<code>/oak:index</code> definitions are <strong>mutable</strong> but ship as part of your project. And <code>/apps</code> is read-only at runtime — so any code that tried to <em>write</em> to <code>/apps</code> on a running instance (some legacy config patterns did) must be refactored, often to <a href="https://sling.apache.org/documentation/bundles/repository-initialization.html" target="_blank">RepoInit</a>.
+</div>
+
+<h2>Quick retrieval check</h2>
+
+<div class="quiz" data-answer="1"
+     data-explain0="/conf holds editable template &amp; policy config — authors change it at runtime, so it is mutable."
+     data-explain1="Correct. /apps is code, baked into the golden image at deploy, read-only at runtime."
+     data-explain2="/content is authored pages — mutable by definition."
+     data-explain3="/home stores users and groups — mutable, changed at runtime.">
+  <div class="q">Which path is <strong>immutable</strong> on AEM as a Cloud Service?</div>
+  <button>The /conf tree</button>
+  <button>The /apps tree</button>
+  <button>The /content tree</button>
+  <button>The /home tree</button>
+  <div class="feedback"></div>
+</div>
+
+<div class="quiz" data-answer="2"
+     data-explain0="No — the pipeline would reject it; content in an application package fails validation."
+     data-explain1="No — there is no auto-sorting; you must structure the packages yourself."
+     data-explain2="Correct. The application package must contain only immutable paths, or the build fails."
+     data-explain3="No — mixing is exactly what the split forbids.">
+  <div class="q">You put a <code>/content/myco</code> node inside your <code>ui.apps</code> (application) package. What happens?</div>
+  <button>It deploys fine, just slower</button>
+  <button>AEM moves it to the right place</button>
+  <button>The Cloud Manager build fails validation</button>
+  <button>It works but only on author</button>
+  <div class="feedback"></div>
+</div>
+
+<div class="source">
+<span class="label">Primary source — read this next</span>
+<a href="https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/implementing/developing/aem-project-content-package-structure" target="_blank">AEM Project Structure — Mutable vs. Immutable Content (Adobe Experience League)</a>. The authoritative reference; skim the "Mutable vs Immutable" and "Package Types" sections.
+</div>
+
+<div class="ask">
+💬 <strong>I'm your teacher — ask me anything.</strong> Unsure how this maps to <em>your</em> existing project's Maven modules? Wondering how the AEM Project Archetype scaffolds this split, or how to migrate a legacy single-package project? Just ask.
+</div>
+
+<div class="footer-nav">
+  <span>AEMaaCS Migration Course</span>
+  <span>Lesson 1 of the Readiness Phase · Next: OSGi config as code &amp; no /system/console</span>
+</div>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>
