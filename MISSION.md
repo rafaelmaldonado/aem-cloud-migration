@@ -37,3 +37,9 @@ behind each Adobe recommendation, not just recall facts.
 
 _Last updated: 2026-07-13 (pivoted from general dev-readiness to AD0-E136 cert prep —
 see learning record 0002)_
+
+## Progreso (hub)
+El landing (`learning/index.html`) calcula el avance de este curso como
+**lecciones en `lessons/` ÷ total planeado**, contadas en vivo vía la GitHub API.
+Cada archivo `lessons/NNNN-*.html` que construyas sube la barra automáticamente.
+- **Total planeado:** 30 lecciones (estimado; ajústalo aquí y en `PROJECTS[].total` del hub si cambia el plan).
